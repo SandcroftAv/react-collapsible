@@ -1,39 +1,39 @@
-import React from 'react';
-import ReactDom from 'react-dom';
+'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-var Collapsible = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Collapsible = _react2.default.createClass({
+    displayName: 'Collapsible',
+
 
     //Set validation for prop types
     propTypes: {
-        transitionTime: React.PropTypes.number,
-        easing: React.PropTypes.string,
-        open: React.PropTypes.bool,
-        classParentString: React.PropTypes.string,
-        accordionPosition: React.PropTypes.number,
-        handleTriggerClick: React.PropTypes.func,
-        trigger: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.element
-        ]),
-        triggerWhenOpen: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.element
-        ]),
-        lazyRender: React.PropTypes.bool,
-        overflowWhenOpen: React.PropTypes.oneOf([
-            'hidden',
-            'visible',
-            'auto',
-            'scroll',
-            'inherit',
-            'initial',
-            'unset'
-        ])
+        transitionTime: _react2.default.PropTypes.number,
+        easing: _react2.default.PropTypes.string,
+        open: _react2.default.PropTypes.bool,
+        classParentString: _react2.default.PropTypes.string,
+        accordionPosition: _react2.default.PropTypes.number,
+        handleTriggerClick: _react2.default.PropTypes.func,
+        trigger: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.element]),
+        triggerWhenOpen: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.element]),
+        lazyRender: _react2.default.PropTypes.bool,
+        overflowWhenOpen: _react2.default.PropTypes.oneOf(['hidden', 'visible', 'auto', 'scroll', 'inherit', 'initial', 'unset'])
     },
 
     //If no transition time or easing is passed then default to this
-    getDefaultProps: function () {
+    getDefaultProps: function getDefaultProps() {
         return {
             transitionTime: 400,
             easing: 'linear',
@@ -45,7 +45,7 @@ var Collapsible = React.createClass({
     },
 
     //Defaults the dropdown to be closed
-    getInitialState: function () {
+    getInitialState: function getInitialState() {
 
         if (this.props.open) {
             return {
@@ -55,9 +55,8 @@ var Collapsible = React.createClass({
                 transition: 'none',
                 hasBeenOpened: true,
                 overflow: this.props.overflowWhenOpen
-            }
-        }
-        else {
+            };
+        } else {
             return {
                 isClosed: true,
                 shouldSwitchAutoOnNextCycle: false,
@@ -65,13 +64,13 @@ var Collapsible = React.createClass({
                 transition: 'height ' + this.props.transitionTime + 'ms ' + this.props.easing,
                 hasBeenOpened: false,
                 overflow: 'hidden'
-            }
+            };
         }
     },
 
     // Taken from https://github.com/EvandroLG/transitionEnd/
     // Determines which prefixed event to listen for
-    whichTransitionEnd: function (element) {
+    whichTransitionEnd: function whichTransitionEnd(element) {
         var transitions = {
             'WebkitTransition': 'webkitTransitionEnd',
             'MozTransition': 'transitionend',
@@ -86,21 +85,22 @@ var Collapsible = React.createClass({
         }
     },
 
-    componentDidMount: function () {
+    componentDidMount: function componentDidMount() {
+        var _this = this;
+
         //Set up event listener to listen to transitionend so we can switch the height from fixed pixel to auto for much responsiveness;
         //TODO:  Once Synthetic transitionend events have been exposed in the next release of React move this funciton to a function handed to the onTransitionEnd prop
 
-        this.refs.outer.addEventListener(this.whichTransitionEnd(this.refs.outer), (event) => {
-            if (this.state.isClosed === false) {
-                this.setState({
+        this.refs.outer.addEventListener(this.whichTransitionEnd(this.refs.outer), function (event) {
+            if (_this.state.isClosed === false) {
+                _this.setState({
                     shouldSwitchAutoOnNextCycle: true
                 });
             }
-
         });
     },
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate: function componentDidUpdate(prevProps) {
 
         if (this.state.shouldSwitchAutoOnNextCycle === true && this.state.isClosed === false) {
             //Set the height to auto to make compoenent re-render with the height set to auto.
@@ -118,50 +118,45 @@ var Collapsible = React.createClass({
 
             if (this.props.open === true) {
                 this.openCollasible();
-            }
-            else {
+            } else {
                 this.closeCollapsible();
             }
         }
     },
 
-
-    handleTriggerClick: function (event) {
+    handleTriggerClick: function handleTriggerClick(event) {
 
         event.preventDefault();
 
         if (this.props.handleTriggerClick) {
             this.props.handleTriggerClick(this.props.accordionPosition);
-        }
-        else {
+        } else {
 
             if (this.state.isClosed === true) {
                 this.openCollasible();
-            }
-            else {
+            } else {
                 this.closeCollapsible();
             }
         }
-
     },
 
-    closeCollapsible: function () {
+    closeCollapsible: function closeCollapsible() {
         this.setState({
             isClosed: true,
             shouldSwitchAutoOnNextCycle: true,
             height: this.refs.inner.offsetHeight,
-            overflow: 'hidden',
+            overflow: 'hidden'
         });
     },
 
-    openCollasible: function () {
+    openCollasible: function openCollasible() {
         this.setState({
             height: this.refs.inner.offsetHeight,
             transition: 'height ' + this.props.transitionTime + 'ms ' + this.props.easing,
             isClosed: false,
             hasBeenOpened: true
         });
-        let outer = this.refs.outer;
+        var outer = this.refs.outer;
 
         console.log(outer);
         setTimeout(function () {
@@ -169,7 +164,7 @@ var Collapsible = React.createClass({
         }, this.props.transitionTime);
     },
 
-    makeResponsive: function () {
+    makeResponsive: function makeResponsive() {
         this.setState({
             height: 'auto',
             transition: 'none',
@@ -178,18 +173,20 @@ var Collapsible = React.createClass({
         });
     },
 
-    prepareToOpen: function () {
+    prepareToOpen: function prepareToOpen() {
+        var _this2 = this;
+
         //The height has been changes back to fixed pixel, we set a small timeout to force the CSS transition back to 0 on the next tick.
-        window.setTimeout(() => {
-            this.setState({
+        window.setTimeout(function () {
+            _this2.setState({
                 height: 0,
                 shouldSwitchAutoOnNextCycle: false,
-                transition: 'height ' + this.props.transitionTime + 'ms ' + this.props.easing
+                transition: 'height ' + _this2.props.transitionTime + 'ms ' + _this2.props.easing
             });
         }, 50);
     },
 
-    render: function () {
+    render: function render() {
 
         var dropdownStyle = {
             height: this.state.height,
@@ -197,31 +194,38 @@ var Collapsible = React.createClass({
             msTransition: this.state.transition,
             transition: this.state.transition,
             overflow: this.state.overflow
-        }
+        };
 
         var openClass = this.state.isClosed ? 'is-closed' : 'is-open';
 
         //If user wants different text when tray is open
-        var trigger = (this.state.isClosed === false) && (this.props.triggerWhenOpen !== undefined) ? this.props.triggerWhenOpen : this.props.trigger;
+        var trigger = this.state.isClosed === false && this.props.triggerWhenOpen !== undefined ? this.props.triggerWhenOpen : this.props.trigger;
 
         // Don't render children until the first opening of the Collapsible if lazy rendering is enabled
         var children = this.props.children;
-        if (this.props.lazyRender)
-            if (!this.state.hasBeenOpened)
-                children = null;
+        if (this.props.lazyRender) if (!this.state.hasBeenOpened) children = null;
 
-        return (
-            <div className={this.props.classParentString}>
-                <span className={this.props.classParentString + "__trigger" + ' ' + openClass} onClick={this.handleTriggerClick}>{trigger}</span>
-                <div className={this.props.classParentString + "__contentOuter" } ref="outer" style={dropdownStyle}>
-                    <div className={this.props.classParentString + "__contentInner"} ref="inner">
-                        {children}
-                    </div>
-                </div>
-            </div>
+        return _react2.default.createElement(
+            'div',
+            { className: this.props.classParentString },
+            _react2.default.createElement(
+                'span',
+                { className: this.props.classParentString + "__trigger" + ' ' + openClass, onClick: this.handleTriggerClick },
+                trigger
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: this.props.classParentString + "__contentOuter", ref: 'outer', style: dropdownStyle },
+                _react2.default.createElement(
+                    'div',
+                    { className: this.props.classParentString + "__contentInner", ref: 'inner' },
+                    children
+                )
+            )
         );
     }
 
 });
 
-export default Collapsible;
+exports.default = Collapsible;
+
