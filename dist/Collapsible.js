@@ -114,7 +114,6 @@ var Collapsible = _react2.default.createClass({
 
         //If there has been a change in the open prop (controlled by accordion)
         if (prevProps.open != this.props.open) {
-            console.log('Open state changed!', this.props.accordionPosition);
 
             if (this.props.open === true) {
                 this.openCollasible();
@@ -158,7 +157,6 @@ var Collapsible = _react2.default.createClass({
         });
         var outer = this.refs.outer;
 
-        console.log(outer);
         setTimeout(function () {
             outer.scrollTop = 0;
         }, this.props.transitionTime);
