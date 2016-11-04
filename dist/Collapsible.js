@@ -157,8 +157,12 @@ var Collapsible = _react2.default.createClass({
         });
         var outer = this.refs.outer;
 
-        setTimeout(function () {
+        var interval = setInterval(function () {
             outer.scrollTop = 0;
+        }, 10);
+
+        setTimeout(function () {
+            clearInterval(interval);
         }, this.props.transitionTime);
     },
 

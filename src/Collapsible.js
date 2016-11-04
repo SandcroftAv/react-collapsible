@@ -162,8 +162,12 @@ var Collapsible = React.createClass({
         });
         let outer = this.refs.outer;
 
-        setTimeout(function () {
+        let interval = setInterval(function() {
             outer.scrollTop = 0;
+        }, 10);
+
+        setTimeout(function () {
+            clearInterval(interval);
         }, this.props.transitionTime);
     },
 
